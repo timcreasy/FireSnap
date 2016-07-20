@@ -20,6 +20,10 @@ firesnap.config(function($stateProvider, $urlRouterProvider){
       url:'/viewsnap',
       templateUrl: 'views/viewsnap.html',
       controller: 'ViewSnapCtrl'
+  }).state('sendpage',{
+      url:'/sendpage',
+      templateUrl: 'views/sendsnap.html',
+      controller: 'SendSnapCtrl'
   });
   $urlRouterProvider.otherwise('/');
 });

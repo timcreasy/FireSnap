@@ -8,4 +8,22 @@ firesnap.service("FirebaseInteraction", function($state) {
     });
   };
 
+  this.getUsers = function() {
+
+    return firebase.database().ref('users').once('value', function(snapshot) {
+      return snapshot.val();
+    });
+
+  }
+
 });
+
+
+//   let users = snapshot.val();
+//   let counter = 1;
+//   $scope.userList = [];
+//   for (let user in users) {
+//     users[user].id = counter;
+//     counter++;
+//     $scope.userList.push(users[user]);
+//   }

@@ -1,4 +1,4 @@
-var firesnap = angular.module('firesnap', ['ionic','ngCordova', 'firebase', 'ngStorage'])
+var firesnap = angular.module('firesnap', ['ionic','ngCordova', 'firebase', 'ngStorage', 'ionic-multiselect'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {

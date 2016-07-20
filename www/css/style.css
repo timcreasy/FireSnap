@@ -16,6 +16,15 @@
   background-color: white;
 }
 
+#imageOutput {
+  margin-top: 10px;
+  text-align: center;
+}
+
+#imageToSend {
+  width: 70%;
+}
+
 .center{
   display: -webkit-box;
     display: -moz-box;

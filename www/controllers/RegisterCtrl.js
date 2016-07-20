@@ -1,4 +1,4 @@
-firesnap.controller('RegisterCtrl', ['$scope', '$ionicPlatform', 'Auth', '$state',
+firesnap.controller('RegisterCtrl',
   function($scope, $ionicPlatform, Auth, $state) {
 
     $scope.loginPressed = function() {
@@ -17,5 +17,4 @@ firesnap.controller('RegisterCtrl', ['$scope', '$ionicPlatform', 'Auth', '$state
 
     };
 
-  }
-]);
+});

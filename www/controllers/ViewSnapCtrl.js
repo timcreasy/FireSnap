@@ -1,4 +1,4 @@
-firesnap.controller('ViewSnapCtrl', ['$scope', '$ionicPlatform', '$state', 'ViewSnap',
+firesnap.controller('ViewSnapCtrl',
   function($scope, $ionicPlatform, $state, ViewSnap) {
 
     $scope.snapImage = ViewSnap.getSnapToView();
@@ -7,5 +7,4 @@ firesnap.controller('ViewSnapCtrl', ['$scope', '$ionicPlatform', '$state', 'View
       $state.go('home');
     }
 
-  }
-]);
+  });

@@ -1,7 +1,7 @@
-firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '$interval', '$timeout', '$localStorage', '$sessionStorage', 'Auth', 'CurrentUser', 'ViewSnap', '$state', '$ionicLoading', '$ionicGesture',
-  function($scope, $ionicPlatform, $cordovaCamera, $interval, $timeout, $localStorage, $sessionStorage, Auth, CurrentUser, ViewSnap, $state, $ionicLoading, $ionicGesture) {
+firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera, $interval, $timeout, $localStorage, $sessionStorage, Auth, CurrentUser, ViewSnap, $state, $ionicLoading, $ionicGesture, ImageToSend) {
 
     $scope.timerActive = false;
+    $scope.counter = 10;
 
     // Listen for any changes for new images
     firebase.database().ref('images').on('value', function(snapshot) {
@@ -13,6 +13,10 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
     // Logout button pressed in nav bar
     $scope.logout = function() {
       Auth.logout();
+    }
+
+    $scope.goToSend = function() {
+      $state.go('sendpage');
     }
 
     // Snap button pressed in nav bar
@@ -32,11 +36,17 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
       };
 
       $cordovaCamera.getPicture(options).then(function(imageData) {
-        firebase.database().ref().child('images').push({
+        ImageToSend.set({
           image: imageData,
           userId: CurrentUser.getUser().uid,
           fullName: CurrentUser.getUser().fullName
         });
+        // firebase.database().ref().child('images').push({
+        //   image: imageData,
+        //   userId: CurrentUser.getUser().uid,
+        //   fullName: CurrentUser.getUser().fullName
+        // });
+        $state.go('sendpage');
       }, function(err) {
         // error
       });
@@ -64,6 +74,7 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
     $scope.imageHeld = function(selected) {
       var sourceString = 'data:image/jpeg;base64,' + selected.image;
       var img = `<div id="overlay">
+                    <h1 id="counterOutput">${$scope.counter}</h1>
                     <img id="snapImage" src="${sourceString}">
                    </div>`;
 
@@ -79,6 +90,24 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
         }, 5000);
       }
 
+      // if (!$scope.timerActive) {
+      //   $scope.timerActive = true;
+      //
+      //   let countdown = $interval(function() {
+      //     $scope.counter--;
+      //     console.log($scope.counter);
+      //     document.getElementById('counterOutput').innerHTML = $scope.counter;
+      //   }, 1000);
+      //
+      //   $timeout(function() {
+      //     console.log("Timer Done");
+      //     $scope.timerActive = false;
+      //     $interval.cancel(countdown);
+      //     $scope.counter = 10;
+      //     $scope.hide();
+      //   }, 10000);
+      // }
+
     }
 
     // Logic for when image released
@@ -87,4 +116,4 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
     }
 
 
-}]);
+});
