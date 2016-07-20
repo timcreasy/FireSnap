@@ -1,4 +1,4 @@
-firesnap.service("Auth", function($ionicPopup, $state, FirebaseInteraction, CurrentUser) {
+firesnap.service("Auth", function($ionicPopup, $state, FirebaseInteraction, CurrentUser, $localStorage) {
 
   this.login = function(userEmail, userPassword) {
 

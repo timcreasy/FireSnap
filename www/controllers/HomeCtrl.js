@@ -10,13 +10,18 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
       });
     });
 
+
+    //
+    // // Listen for any changes for new images
+    // firebase.database().ref('users').child($scope.user.uid).child('inbox').on('value', function(snapshot) {
+    //   $timeout(function() {
+    //     $scope.collection = snapshot.val();
+    //   });
+    // });
+
     // Logout button pressed in nav bar
     $scope.logout = function() {
       Auth.logout();
-    }
-
-    $scope.goToSend = function() {
-      $state.go('sendpage');
     }
 
     // Snap button pressed in nav bar
