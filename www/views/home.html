@@ -1,16 +1,36 @@
-<ion-view view-title="Firesnap">
+<ion-view view-title="FireSnap">
   <ion-nav-buttons side="right">
     <button class="button" ng-click="logout()">
       Log Out
     </button>
   </ion-nav-buttons>
+  <ion-nav-buttons side="left">
+    <button class="button" ng-click="picture()">
+      Snap
+    </button>
+  </ion-nav-buttons>
     <ion-content id="homeView">
-      <button ng-click="picture()">Take picture</button>
+      <!-- <button ng-click="picture()">Take picture</button> -->
 
-      <button ng-click="$storage.counter = $storage.counter + 1">{{$storage.counter}}</button>
-
-      <div ng-repeat="image in collection">
+      <!-- <div ng-repeat="image in collection">
         <img class="images" ng-src="data:image/jpeg;base64,{{image.image}}" width="100%" />
+      </div> -->
+      <!-- <div class="list">
+        <div ng-repeat="image in collection">
+          <div ng-click='imagePressed($event)' class="item item-thumbnail-left">
+            <img class="images" ng-src="data:image/jpeg;base64,{{image.image}}">
+            <h1>{{image.fullName}}</h1>
+          </div>
+        </div>
+      </div> -->
+
+      <div class="list">
+        <div ng-repeat="image in collection">
+          <div on-hold="imageHeld(image)" on-release="imageReleased()" class="item item-thumbnail-left">
+            <img class="images" ng-src="data:image/jpeg;base64,{{image.image}}">
+            <h1>{{image.fullName}}</h1>
+          </div>
+        </div>
       </div>
 
     </ion-content>

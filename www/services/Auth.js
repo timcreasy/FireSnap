@@ -1,4 +1,4 @@
-firesnap.service("Auth", function($ionicPopup, $state) {
+firesnap.service("Auth", function($ionicPopup, $state, FirebaseInteraction, CurrentUser) {
 
   this.login = function(userEmail, userPassword) {
 
@@ -23,14 +23,47 @@ firesnap.service("Auth", function($ionicPopup, $state) {
     firebase.auth().signOut();
   }
 
+
+  // Register function
+  this.register = function(userEmail, userPassword, fullName) {
+
+    var registerApp = firebase.initializeApp(config, "Register");
+
+    registerApp.auth().createUserWithEmailAndPassword(userEmail, userPassword).then(function(user) {
+
+        // Show registration success
+        $ionicPopup.show({
+          title: "Registration Successful",
+          template: "Your account has been created!",
+          buttons: [{
+            text: 'Dismiss',
+            type: 'button-default'
+          }]
+        });
+
+        FirebaseInteraction.addNewUserToFirebase(user.uid, userEmail, fullName);
+
+        // Prevent automatic login by immediately signing out
+        registerApp.auth().signOut();
+
+        // Go to login page
+        $state.go('login');
+    });
+
+  }
+
+
   firebase.auth().onAuthStateChanged(function(user) {
     // If logged in go to home, otherwise, back to login
     if (user) {
-      console.log(user);
+      CurrentUser.setUser(user.uid);
       $state.go('home');
     } else {
-      $state.go('index');
+      CurrentUser.setUser(null);
+      $state.go('login');
     }
   });
+
+
 
 });
