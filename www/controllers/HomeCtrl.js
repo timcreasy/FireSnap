@@ -1,18 +1,21 @@
 firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '$interval', '$timeout', '$localStorage', '$sessionStorage', 'Auth', 'CurrentUser', 'ViewSnap', '$state', '$ionicLoading', '$ionicGesture',
   function($scope, $ionicPlatform, $cordovaCamera, $interval, $timeout, $localStorage, $sessionStorage, Auth, CurrentUser, ViewSnap, $state, $ionicLoading, $ionicGesture) {
 
+    $scope.timerActive = false;
+
+    // Listen for any changes for new images
+    firebase.database().ref('images').on('value', function(snapshot) {
+      $timeout(function() {
+        $scope.collection = snapshot.val();
+      });
+    });
+
+    // Logout button pressed in nav bar
     $scope.logout = function() {
       Auth.logout();
     }
 
-    firebase.database().ref('images').on('value', function(snapshot) {
-
-      $timeout(function() {
-        $scope.collection = snapshot.val();
-      });
-
-    });
-
+    // Snap button pressed in nav bar
     $scope.picture = function() {
 
       var options = {
@@ -40,6 +43,7 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
 
     }
 
+    // Shows image overlay on hold
     $scope.show = function(image) {
       $ionicLoading.show({
         template: image
@@ -48,28 +52,15 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
       });
     };
 
+    // Hides image overlay on release
     $scope.hide = function(){
       $ionicLoading.hide().then(function(){
         //  console.log("The loading indicator is now hidden");
       });
     };
 
-    // $scope.timerFunction = function() {
-    //
-    //   let counter = 5;
-    //   let timer = $interval(function() {
-    //     counter--;
-    //     if(counter < 0) {
-    //       $interval.cancel(timer);
-    //       console.log("DONE");
-    //       $scope.hide();
-    //     } else {
-    //       console.log(counter);
-    //     }
-    //   }, 1000);
-    //
-    // }
 
+    // Logic for when image is held
     $scope.imageHeld = function(selected) {
       var sourceString = 'data:image/jpeg;base64,' + selected.image;
       var img = `<div id="overlay">
@@ -78,13 +69,19 @@ firesnap.controller('HomeCtrl', ['$scope', '$ionicPlatform', '$cordovaCamera', '
 
       $scope.show(img);
 
-      $timeout(function() {
-        $scope.hide();
-      }, 4000);
+      // Timer logic
+      if (!$scope.timerActive) {
+        $scope.timerActive = true;
+        $timeout(function() {
+          console.log("Timer Done");
+          $scope.timerActive = false;
+          $scope.hide();
+        }, 5000);
+      }
 
-      // $scope.timerFunction();
     }
 
+    // Logic for when image released
     $scope.imageReleased = function() {
       $scope.hide();
     }
