@@ -14,7 +14,8 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
 
 
     $scope.timerActive = false;
-    $scope.counter = 10;
+    $scope.counter = 5;
+    $scope.timer = null;
 
     // // Listen for any changes for new images
     // firebase.database().ref('images').on('value', function(snapshot) {
@@ -91,6 +92,9 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
 
     // Logic for when image is held
     $scope.imageHeld = function(selected) {
+
+      console.log(selected);
+
       var sourceString = 'data:image/jpeg;base64,' + selected.image;
       var img = `<div id="overlay">
                     <h1 id="counterOutput">${$scope.counter}</h1>
@@ -99,16 +103,41 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
 
       $scope.show(img);
 
-      // Timer logic
-      if (!$scope.timerActive) {
+      // // Timer logic
+      // if (!$scope.timerActive) {
+      //   $scope.timerActive = true;
+      //   $timeout(function() {
+      //     console.log("Timer Done");
+      //     $scope.timerActive = false;
+      //     $scope.hide();
+      //   }, 5000);
+      // }
+
+
+      if(!$scope.timerActive) {
+
         $scope.timerActive = true;
-        $timeout(function() {
-          console.log("Timer Done");
-          $scope.timerActive = false;
-          $scope.hide();
-        }, 5000);
+
+        $scope.timer = $interval(function () {
+
+          if($scope.counter == 1) {
+            $interval.cancel($scope.timer);
+            $scope.hide();
+            $scope.counter = 5;
+            $scope.timerActive = false;
+          } else {
+            $scope.counter--;
+            console.log($scope.counter);
+            document.getElementById('counterOutput').innerHTML = $scope.counter;
+          }
+
+        }, 1000);
+
+
       }
 
+
+      //
       // if (!$scope.timerActive) {
       //   $scope.timerActive = true;
       //
@@ -122,10 +151,22 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
       //     console.log("Timer Done");
       //     $scope.timerActive = false;
       //     $interval.cancel(countdown);
-      //     $scope.counter = 10;
+      //     $scope.counter = 5;
       //     $scope.hide();
-      //   }, 10000);
+      //   }, 5000);
       // }
+
+      // let countdown = $interval(function() {
+      //   if($scope.counter === 0) {
+      //     $interval.cancel(countdown);
+      //     $scope.hide();
+      //     $scope.counter = 5;
+      //   } else {
+      //     $scope.counter--;
+      //     console.log($scope.counter);
+      //     document.getElementById('counterOutput').innerHTML = $scope.counter;
+      //   }
+      // }, 1000);
 
     }
 

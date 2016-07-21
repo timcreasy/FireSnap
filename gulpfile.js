@@ -6,12 +6,19 @@ var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
 var sh = require('shelljs');
+var jasmine = require('gulp-jasmine');
 
 var paths = {
   sass: ['./scss/**/*.scss']
 };
 
 gulp.task('default', ['sass']);
+
+gulp.task('test', () =>
+    gulp.src('www/spec/test.js')
+        // gulp-jasmine works on filepaths so you can't have any plugins before it
+        .pipe(jasmine())
+);
 
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
