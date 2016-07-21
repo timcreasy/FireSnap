@@ -1,31 +1,15 @@
 firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera, $interval, $timeout, $localStorage, $sessionStorage, Auth, CurrentUser, ViewSnap, $state, $ionicLoading, $ionicGesture, ImageToSend) {
 
+  // On auth state change
   firebase.auth().onAuthStateChanged(function(theUser) {
+
     // If logged in go to home, otherwise, back to login
     if (theUser) {
-  //     CurrentUser.setUser(user.uid);
-  //     $state.go('home');
-  //   } else {
-  //     CurrentUser.setUser(null);
-  //     $state.go('login');
-  //   }
-  // });
-
-
 
     $scope.timerActive = false;
     $scope.counter = 5;
     $scope.timer = null;
 
-    // // Listen for any changes for new images
-    // firebase.database().ref('images').on('value', function(snapshot) {
-    //   $timeout(function() {
-    //     $scope.collection = snapshot.val();
-    //   });
-    // });
-
-
-    //
     // // Listen for any changes for new images
     firebase.database().ref('users').child(theUser.uid).child('inbox').on('value', function(snapshot) {
       $timeout(function() {
@@ -61,11 +45,6 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
           userId: CurrentUser.getUser().uid,
           fullName: CurrentUser.getUser().fullName
         });
-        // firebase.database().ref().child('images').push({
-        //   image: imageData,
-        //   userId: CurrentUser.getUser().uid,
-        //   fullName: CurrentUser.getUser().fullName
-        // });
         $state.go('sendpage');
       }, function(err) {
         // error
@@ -93,33 +72,21 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
     // Logic for when image is held
     $scope.imageHeld = function(selected) {
 
-      console.log(selected);
+      // if (viewed === false) {
 
+      // Show selected image
       var sourceString = 'data:image/jpeg;base64,' + selected.image;
       var img = `<div id="overlay">
                     <h1 id="counterOutput">${$scope.counter}</h1>
                     <img id="snapImage" src="${sourceString}">
                    </div>`;
-
       $scope.show(img);
 
-      // // Timer logic
-      // if (!$scope.timerActive) {
-      //   $scope.timerActive = true;
-      //   $timeout(function() {
-      //     console.log("Timer Done");
-      //     $scope.timerActive = false;
-      //     $scope.hide();
-      //   }, 5000);
-      // }
 
-
+      // If there is not a timer active, start a new timer
       if(!$scope.timerActive) {
-
         $scope.timerActive = true;
-
         $scope.timer = $interval(function () {
-
           if($scope.counter == 1) {
             $interval.cancel($scope.timer);
             $scope.hide();
@@ -130,43 +97,8 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
             console.log($scope.counter);
             document.getElementById('counterOutput').innerHTML = $scope.counter;
           }
-
         }, 1000);
-
-
       }
-
-
-      //
-      // if (!$scope.timerActive) {
-      //   $scope.timerActive = true;
-      //
-      //   let countdown = $interval(function() {
-      //     $scope.counter--;
-      //     console.log($scope.counter);
-      //     document.getElementById('counterOutput').innerHTML = $scope.counter;
-      //   }, 1000);
-      //
-      //   $timeout(function() {
-      //     console.log("Timer Done");
-      //     $scope.timerActive = false;
-      //     $interval.cancel(countdown);
-      //     $scope.counter = 5;
-      //     $scope.hide();
-      //   }, 5000);
-      // }
-
-      // let countdown = $interval(function() {
-      //   if($scope.counter === 0) {
-      //     $interval.cancel(countdown);
-      //     $scope.hide();
-      //     $scope.counter = 5;
-      //   } else {
-      //     $scope.counter--;
-      //     console.log($scope.counter);
-      //     document.getElementById('counterOutput').innerHTML = $scope.counter;
-      //   }
-      // }, 1000);
 
     }
 
