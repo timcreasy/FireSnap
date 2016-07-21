@@ -1,5 +1,8 @@
-firesnap.controller('LoginCtrl', ['$scope', '$ionicPlatform', 'Auth', '$localStorage',
-  function($scope, $ionicPlatform, Auth, $localStorage) {
+firesnap.controller('LoginCtrl', function($scope, $ionicPlatform, Auth, $localStorage, $ionicLoading, $state) {
+
+    $scope.registerPressed = function() {
+      $state.go('register');
+    }
 
     $scope.login = {
       email:  "",
@@ -19,4 +22,4 @@ firesnap.controller('LoginCtrl', ['$scope', '$ionicPlatform', 'Auth', '$localSto
     };
 
   }
-]);
+);

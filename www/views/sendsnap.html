@@ -1,0 +1,63 @@
+<ion-view view-title="Send Snap">
+  <ion-nav-buttons side="left">
+    <button class="button" ng-click="goHome()">
+      Home
+    </button>
+  </ion-nav-buttons>
+  <ion-content id="sendSnapView">
+
+    <div id="imageOutput">
+      <img id="imageToSend" class="images" ng-src="data:image/jpeg;base64,{{imageToSend.image}}">
+    </div>
+
+    <center>
+      <multiselect
+        header-text="Select Recipients"
+        items="userList"
+        text-property="fullName"
+        value-property="uid"
+        is-translate="false"
+        text="Text default multiselect"
+        modal-template-url="lib/ionic-multiselect/dist/templates/modal-template.html"
+        template-url="lib/ionic-multiselect/dist/templates/item-template.html"
+        note-text="Note Text"
+        value-changed="onValueChanged(value)">
+      </multiselect>
+    </center>
+
+    <!-- <div ng-repeat="user in usersToSendTo">
+      <p>{{user.fullName}}</p>
+    </div> -->
+
+    <!-- <ion-item>
+      <ion-label>Toppings</ion-label>
+      <ion-select [(ngModel)]="toppings" multiple="true">
+        <ion-option>Bacon</ion-option>
+        <ion-option>Black Olives</ion-option>
+        <ion-option>Extra Cheese</ion-option>
+        <ion-option>Mushrooms</ion-option>
+        <ion-option>Pepperoni</ion-option>
+        <ion-option>Sausage</ion-option>
+      </ion-select>
+    </ion-item> -->
+
+
+
+    <!-- <ion-list>
+      <ion-item ng-repeat="item in items" ng-click="clicked(item)" ng-class="{ active: item.selected }">
+        {{item.name}}
+      </ion-item>
+    </ion-list> -->
+
+    <!-- <ion-list>
+      <ion-item ng-repeat="user in userList" ng-click="clicked(user)" ng-class="{ active: user.selected }">
+        {{user.fullName}}
+      </ion-item>
+    </ion-list> -->
+
+    <!-- <div ng-repeat="user in userList">
+      <p>{{user.fullName}}</p>
+    </div> -->
+
+  </ion-content>
+</ion-view>
