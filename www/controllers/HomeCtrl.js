@@ -1,27 +1,41 @@
 firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera, $interval, $timeout, $localStorage, $sessionStorage, Auth, CurrentUser, ViewSnap, $state, $ionicLoading, $ionicGesture, ImageToSend) {
 
+  firebase.auth().onAuthStateChanged(function(theUser) {
+    // If logged in go to home, otherwise, back to login
+    if (theUser) {
+  //     CurrentUser.setUser(user.uid);
+  //     $state.go('home');
+  //   } else {
+  //     CurrentUser.setUser(null);
+  //     $state.go('login');
+  //   }
+  // });
+
+
+
     $scope.timerActive = false;
     $scope.counter = 10;
 
-    // Listen for any changes for new images
-    firebase.database().ref('images').on('value', function(snapshot) {
-      $timeout(function() {
-        $scope.collection = snapshot.val();
-      });
-    });
-
-
-    //
     // // Listen for any changes for new images
-    // firebase.database().ref('users').child($scope.user.uid).child('inbox').on('value', function(snapshot) {
+    // firebase.database().ref('images').on('value', function(snapshot) {
     //   $timeout(function() {
     //     $scope.collection = snapshot.val();
     //   });
     // });
 
+
+    //
+    // // Listen for any changes for new images
+    firebase.database().ref('users').child(theUser.uid).child('inbox').on('value', function(snapshot) {
+      $timeout(function() {
+        $scope.collection = snapshot.val();
+      });
+    });
+
     // Logout button pressed in nav bar
     $scope.logout = function() {
       Auth.logout();
+      $state.go('login');
     }
 
     // Snap button pressed in nav bar
@@ -120,5 +134,5 @@ firesnap.controller('HomeCtrl', function($scope, $ionicPlatform, $cordovaCamera,
       $scope.hide();
     }
 
-
+}});
 });
